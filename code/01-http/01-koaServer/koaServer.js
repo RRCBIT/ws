@@ -3,9 +3,10 @@ const app = module.exports = new Koa();
 
 app.use(async function(ctx) {
   console.log('url:', ctx.url)
-  console.log('  method:', ctx.method)
-  console.log('  headers:', ctx.headers)
-  ctx.body = 'Hello World';
+  // console.log('  method:', ctx.method)
+  // console.log('  headers:', ctx.headers)
+  ctx.type = 'text/html'
+  ctx.body = 'Hello World 你好！<a href="http://tw.youtube.com">YouTube</a>';
 });
 
 if (!module.parent) {
