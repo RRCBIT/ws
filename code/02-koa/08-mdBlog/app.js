@@ -41,35 +41,34 @@ if (!module.parent) {
   console.log('server run at http://localhost:3000/')
 }
 
-function layout (html) {
+function layout (path, html) {
   return `
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="theme.css">
 </head>
 <body>
-${html}
+  <header><a href="${path}">View</a>　|　<a href="${path}?op=edit">Edit</a></header>
+  <div class="main">
+    <div class="content">
+      ${html}
+    </div>
+  </div>
 </body>
 </html>
 `
 }
 
 function mdRender (md, path) {
-  return layout(`
-  <div><a href="${path}?op=edit">Edit</a></div>
-  ${mdit.render(md)}
-  `)
+  return layout(path, `${mdit.render(md)}`)
 }
 
 function mdEdit (md, path) {
-  return layout(`
-  <div>
+  return layout(path, `
     <form action="${path}?op=save" method="post">
-      <h2>Path: ${path}</h2>
       <textarea name="mdText">${md}</textarea>
       <br/><br/>
       <button>Save</button>
     </form>
-  </div>
   `)
 }

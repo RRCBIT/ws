@@ -1,4 +1,4 @@
-# 03-fileServer
+# fileServer
 
 ```
 PS D:\ccc\course\nodejs\code\02-koa\04-fileServer> node app.js
