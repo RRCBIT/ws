@@ -11,6 +11,7 @@ const mdit = new MarkdownIt({
 const app = module.exports = new Koa()
 const path = require('path')
 const extname = path.extname
+const mt = require('chinese_convert')
 
 app.use(koaBody({ jsonLimit: '1kb' }))
 
@@ -40,7 +41,10 @@ app.use(async function (ctx) {
       let md = await fs.promises.readFile(fpath, 'utf8')
       switch (op) {
         case 'edit': ctx.body = mdEdit(md, ctx.path); break // 回應編輯畫面
-        default: ctx.body = mdRender(md, ctx.path) // 將 markdown 轉為 HTML 傳回
+        default:
+          if (op === 'tw2cn') md = mt.tw2cn(md)
+          else if (op === 'cn2tw') md = mt.cn2tw(md)
+          ctx.body = mdRender(md, ctx.path) // 將 markdown 轉為 HTML 傳回
       }
     } else { // 不是 .md 檔案
       ctx.type = ext
@@ -66,7 +70,9 @@ function layout (path, html) {
   <header>
     <a href="/Home.md">Home</a> / 
     <a href="${path}">View</a> / 
-    <a href="${path}?op=edit">Edit</a>
+    <a href="${path}?op=edit">Edit</a> / 
+    <a href="${path}?op=tw2cn">简体</a> / 
+    <a href="${path}?op=cn2tw">繁體</a>
   </header>
   <div class="main">
     <div class="content">

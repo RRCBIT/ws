@@ -9,8 +9,9 @@
   "license": "ISC",
   "dependencies": {
     "chai": "^4.2.0",
+    "chinese_convert": "^1.0.8",
     "koa": "^2.8.1",
-    "koa-body": "^4.1.0",
+    "koa-body": "^4.1.1",
     "koa-bodyparser": "^4.2.1",
     "koa-logger": "^3.2.0",
     "koa-router": "^7.4.0",
