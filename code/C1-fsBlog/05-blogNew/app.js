@@ -49,7 +49,7 @@ router
         ctx.body = mdEdit(`# 檔案 ${file} 不存在\n\n您可以編輯後儲存以創建此檔案！`, ctx.path, lang)
       } else { // 該 .md 檔案不存在，顯示編輯框！
         let md = await fs.promises.readFile(fpath+'.md', 'utf8') // 如果找到該 .md 檔案
-        ctx.body = mdEdit(md, ctx.path, lang); break // 回應編輯畫面  
+        ctx.body = mdEdit(md, file, lang); break // 回應編輯畫面  
       }
       break
   }
@@ -62,6 +62,11 @@ router
   ctx.redirect('/blog/'+file) // 顯示儲存完成後的檔案
 })
 
+/*
+.get('/login', async (ctx) => {
+  pageLogin()
+})
+*/
 app.use(koaLogger()) // 使用 koa-logger 紀錄那些網址曾經被訪問過
 app.use(koaBody({ jsonLimit: '1kb' })) // 使用 koa-body 自動將 POST 訊息轉為物件方便存取。
 
@@ -76,15 +81,15 @@ app.use(router.routes()) // 使用 koa-router 路由
 app.listen(3000) // 啟動 Server
 console.log('server run at http://localhost:3000/')
 
-async function fileStat(path) { // 取得檔案狀態 （若不存在傳回 null)
+async function fileStat(file) { // 取得檔案狀態 （若不存在傳回 null)
   var fstate = null
   try {
-    fstate = await fs.promises.stat(path)
+    fstate = await fs.promises.stat(file)
   } catch (error) {}
   return fstate
 }
 
-function layout (path, body, lang) { // 套用 HTML 樣板 (有 css 與 header 區塊)
+function layout (file, body, lang) { // 套用 HTML 樣板 (有 css 與 header 區塊)
   let html = `
 <html>
 <head>
@@ -93,10 +98,11 @@ function layout (path, body, lang) { // 套用 HTML 樣板 (有 css 與 header �
 <body>
   <header>
     <a href="/">首頁</a> / 
-    <a href="${path}?op=edit">編輯</a> / 
-    <a href="${path}?op=view&lang=cn">简体</a> / 
-    <a href="${path}?op=view&lang=tw">繁體</a> / 
-    <a href="${path}?op=view&lang=src">原文</a>
+    <a href="${file}?op=edit">編輯</a> / 
+    <a href="${file}?op=view&lang=cn">简体</a> / 
+    <a href="${file}?op=view&lang=tw">繁體</a> / 
+    <a href="${file}?op=view&lang=src">原文</a> / 
+    <a href="/login">登入</a>
   </header>
   <div class="main">
     <div class="content">
@@ -111,13 +117,13 @@ function layout (path, body, lang) { // 套用 HTML 樣板 (有 css 與 header �
   return html
 }
 
-function mdRender (md, path, lang) { // 呈現 .md 檔案的畫面
-  return layout(path, `${mdit.render(md)}`, lang)
+function mdRender (md, file, lang) { // 呈現 .md 檔案的畫面
+  return layout(file, `${mdit.render(md)}`, lang)
 }
 
-function mdEdit (md, path, lang) { // 編輯 .md 檔案的畫面
-  return layout(path, `
-    <form action="${path}?op=save" method="post">
+function mdEdit (md, file, lang) { // 編輯 .md 檔案的畫面
+  return layout(file, `
+    <form action="${file}?op=save" method="post">
       <textarea name="mdText">${md}</textarea>
       <br/><br/>
       <button>儲存</button>
