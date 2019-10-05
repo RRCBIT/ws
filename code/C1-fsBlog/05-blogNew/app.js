@@ -95,7 +95,8 @@ function layout (path, body, lang) { // 套用 HTML 樣板 (有 css 與 header �
     <a href="/">首頁</a> / 
     <a href="${path}?op=edit">編輯</a> / 
     <a href="${path}?op=view&lang=cn">简体</a> / 
-    <a href="${path}?op=view&lang=tw">繁體</a>
+    <a href="${path}?op=view&lang=tw">繁體</a> / 
+    <a href="${path}?op=view&lang=src">原文</a>
   </header>
   <div class="main">
     <div class="content">
