@@ -1,9 +1,10 @@
-const Koa = require('koa');
-const app = module.exports = new Koa();
+const Koa = require('koa')
+const app = new Koa()
 
 app.use(async function(ctx) {
   console.log('url=', ctx.url)
   ctx.body = 'path :' + ctx.url
-});
+})
 
-if (!module.parent) app.listen(3000);
+app.listen(3000)
+console.log('server run at http://localhost:3000/')
