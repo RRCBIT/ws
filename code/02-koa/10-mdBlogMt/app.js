@@ -21,6 +21,7 @@ app.use(async function (ctx) {
   let op = ctx.query.op
   let ext = extname(ctx.path)
   ctx.type = 'text/html'
+  if (ctx.path === '/') ctx.redirect('/Home.md')
 
   if (op === 'save') { // 想要儲存檔案
     let mdText = ctx.request.body.mdText
