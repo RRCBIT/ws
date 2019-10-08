@@ -16,6 +16,7 @@ function layout (ctx, body, side='') { // 套用 HTML 樣板 (有 css 與 header
 </head>
 <body>
   <header>
+    <a href="toggleSidebar()">≡</a>  
     <a href="/">首頁</a> / 
     ${ctx.session.userId == null ? '<a href="/user/login">登入</a>' : '<a href="/user/logout">登出</a>'}
     ${ctx.path.startsWith('/blog') ? ' / <a href="' + ctx.path + '?op=view">檢視</a>' : ''}

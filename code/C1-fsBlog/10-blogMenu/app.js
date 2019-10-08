@@ -1,6 +1,7 @@
- const Koa = require('koa')
+const Koa = require('koa')
 const KoaRouter = require('koa-router')
 const koaLogger = require('koa-logger')
+const koaStatic = require('koa-static')
 const koaBody = require('koa-body')
 const session = require('koa-session')
 const blog = require('./blog')
@@ -19,6 +20,7 @@ router
 .post('/user/login', user.login)
 .get('/user/logout', user.logout)
 
+app.use(koaStatic('./public'))
 app.use(koaLogger()) // 使用 koa-logger 紀錄那些網址曾經被訪問過
 app.use(koaBody({ jsonLimit: '1kb' })) // 使用 koa-body 自動將 POST 訊息轉為物件方便存取。
 
