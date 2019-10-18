@@ -10,7 +10,9 @@ app.use(async function(ctx) {
   const fstat = await fs.promises.stat(fpath)
   console.log('fstat=', fstat)
   if (fstat.isFile()) {
-    ctx.type = path.extname(fpath)
+    let type = path.extname(fpath)
+    console.log('type=', type)
+    ctx.type = type
     console.log('ctx.type=', ctx.type)
     ctx.body = fs.createReadStream(fpath)
   }
