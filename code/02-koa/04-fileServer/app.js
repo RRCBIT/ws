@@ -1,6 +1,6 @@
 const Koa = require('koa')
 const fs = require('fs')
-const app = module.exports = new Koa()
+const app = new Koa()
 const path = require('path')
 
 app.use(async function(ctx) {
