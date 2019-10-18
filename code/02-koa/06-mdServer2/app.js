@@ -2,17 +2,15 @@ const Koa = require('koa')
 const fs = require('fs')
 const MarkdownIt = require('markdown-it')
 const mdit = new MarkdownIt()
-
 const app = new Koa()
 const path = require('path')
-const extname = path.extname
 
 app.use(async function (ctx) {
   const fpath = path.join(__dirname, ctx.path)
   const fstat = await fs.promises.stat(fpath)
   console.log('fpath=', fpath)
   if (fstat.isFile()) {
-    let ext = extname(fpath)
+    let ext = path.extname(fpath)
     // console.log('ext=', ext)
     if (ext === '.md') {
       let md = await fs.promises.readFile(fpath, 'utf8')
